@@ -1,0 +1,411 @@
+body {
+
+    margin:0;
+
+    background:#f7f9fb;
+
+    font-family:
+    "Noto Sans JP",
+    sans-serif;
+
+    color:#333;
+
+}
+
+
+
+.app {
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+
+
+
+
+h1 {
+
+    text-align:center;
+
+    color:#4b6b8a;
+
+}
+
+
+
+
+
+.menu {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+button {
+
+    border:none;
+
+    background:#e5f0ff;
+
+    padding:10px 15px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover {
+
+    background:#cfe3ff;
+
+}
+
+
+
+
+
+
+.detail {
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,0.08);
+
+}
+
+
+
+
+
+
+
+
+/* =================
+時間割
+================= */
+
+
+.timetable {
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    table-layout:fixed;
+
+}
+
+
+
+
+
+.timetable th {
+
+    background:#edf5ff;
+
+    padding:10px;
+
+    border:1px solid #ddd;
+
+}
+
+
+
+
+.timetable td {
+
+    height:90px;
+
+    border:1px solid #ddd;
+
+    text-align:center;
+
+    vertical-align:middle;
+
+    cursor:pointer;
+
+}
+
+
+
+
+
+.timetable td:hover {
+
+    background:#f3f9ff;
+
+}
+
+
+
+
+
+.class-card {
+
+
+    background:#e8f5ff;
+
+
+    border-radius:12px;
+
+
+    padding:8px;
+
+
+    margin:5px;
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.class-card .room {
+
+
+    font-size:11px;
+
+
+    color:#666;
+
+
+}
+
+
+
+
+
+
+
+
+/* 入力 */
+
+
+input,
+select,
+textarea {
+
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:10px;
+
+    margin:6px 0 12px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+}
+
+
+
+
+
+textarea {
+
+    height:80px;
+
+}
+
+
+
+
+
+/* 学校設定 */
+
+
+#schoolPage label {
+
+
+    display:inline-block;
+
+
+    margin:5px;
+
+
+    background:#f2f2f2;
+
+
+    padding:8px;
+
+
+    border-radius:10px;
+
+
+}
+
+
+
+
+
+/* カレンダー */
+
+.calendar {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(7,1fr);
+
+    gap:8px;
+
+}
+
+
+
+
+
+.day {
+
+    background:white;
+
+    min-height:100px;
+
+    padding:8px;
+
+    border-radius:15px;
+
+}
+
+
+
+
+
+.week {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(7,1fr);
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+
+
+
+
+
+@media(max-width:600px){
+
+
+.timetable {
+
+    font-size:11px;
+
+}
+
+
+.timetable td {
+
+    height:70px;
+
+}
+
+
+
+.app {
+
+    padding:10px;
+
+}
+
+
+}
+
+/* カレンダーの授業コマ */
+
+.class-mini{
+    display:flex;
+    gap:3px;
+    margin-top:4px;
+}
+
+.class-box{
+    width:6px;
+    height:6px;
+    border:1px solid #999;
+    border-radius:1px;
+    display:inline-block;
+}
+
+.class-box.active{
+    background:#9bb7d4;
+    border-color:#9bb7d4;
+}
+
+.calendar-event{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 4px;
+    border-bottom:1px solid #e5e5e5;
+    font-size:14px;
+}
+
+.event-time{
+    min-width:90px;
+}
+
+.event-category{
+    white-space:nowrap;
+}
+
+.calendar-event strong{
+    font-weight:500;
+    flex:1;
+}
+
+.calendar-event button{
+    font-size:11px;
+}
+
+.calendar-event-mini{
+
+    font-size:9px;
+
+    line-height:1.3;
+
+    margin-top:3px;
+
+    padding:3px;
+
+    border-radius:3px;
+
+    background:#f2f5f8;
+
+    overflow:visible;
+
+}

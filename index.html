@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Schedule Link</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<header>
+
+<h1>📔 Schedule Link</h1>
+
+
+<div class="menu">
+
+<button onclick="showPage('calendarPage')">
+📅 手帳
+</button>
+
+
+<button onclick="showPage('timetablePage')">
+🏫 時間割
+</button>
+
+
+<button onclick="showPage('templatePage')">
+⭐ テンプレート
+</button>
+
+
+<button onclick="showPage('schoolPage')">
+⚙ 学校設定
+</button>
+
+</div>
+
+</header>
+
+
+
+
+
+<!-- =====================
+ 手帳
+===================== -->
+
+
+<section id="calendarPage">
+
+
+<div class="month-control">
+
+<button onclick="changeMonth(-1)">
+←
+</button>
+
+
+<h2 id="monthTitle"></h2>
+
+
+<button onclick="changeMonth(1)">
+→
+</button>
+
+
+<button onclick="goToday()">
+📍今日
+</button>
+
+</div>
+
+
+
+<div class="week">
+
+<div>日</div>
+<div>月</div>
+<div>火</div>
+<div>水</div>
+<div>木</div>
+<div>金</div>
+<div>土</div>
+
+</div>
+
+
+
+<div id="calendar"
+class="calendar">
+</div>
+
+
+
+<div class="detail">
+
+
+<h2 id="selectedDate">
+日付を選択してください
+</h2>
+
+
+<h3>📅 予定</h3>
+
+
+<div id="eventList">
+予定はありません
+</div>
+
+<!-- 予定追加 -->
+
+<button onclick="openEventForm()">
+＋ 予定を追加
+</button>
+
+
+<div id="eventForm"
+     style="display:none;">
+
+    <h3>📅 予定を追加</h3>
+
+    <label>
+        カテゴリー
+    </label>
+
+    <select id="eventCategory">
+
+    <option value="バイト">💼 バイト</option>
+
+    <option value="大学">🎓 大学</option>
+
+    <option value="授業">📚 授業</option>
+
+    <option value="サークル">🎸 サークル</option>
+
+    <option value="プライベート">🌷 プライベート</option>
+
+    <option value="その他">📌 その他</option>
+
+</select>
+
+
+    <label>
+        予定名
+    </label>
+
+    <input
+        id="eventName"
+        type="text"
+        placeholder="予定名"
+    >
+
+
+
+<label>
+    <input
+        type="checkbox"
+        id="eventNoTime"
+        onchange="toggleEventTime()"
+    >
+    時間を指定しない
+</label>
+
+<div id="eventTimeArea">
+
+    <label>
+        開始時刻
+    </label>
+
+    <input
+        id="eventStart"
+        type="time"
+    >
+
+
+    <label>
+        終了時刻
+    </label>
+
+    <input
+        id="eventEnd"
+        type="time"
+    >
+
+</div>
+
+    <div>
+
+        <button onclick="saveEvent()">
+            保存
+        </button>
+
+        <button onclick="closeEventForm()">
+            キャンセル
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="classList"></div>
+
+
+<h3>📝 日記</h3>
+
+
+<textarea
+id="diary"
+placeholder="今日の記録">
+</textarea>
+
+
+<button onclick="saveDiary()">
+保存
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+ 時間割
+===================== -->
+
+
+<section
+id="timetablePage"
+style="display:none;">
+
+
+<div class="detail">
+
+
+<h2>🏫 時間割</h2>
+
+
+<p>
+空いているマスをタップすると授業を登録できます。
+<br>
+授業が入っているマスをタップすると編集できます。
+</p>
+
+
+
+<table class="timetable">
+
+
+<thead>
+
+<tr>
+
+<th></th>
+
+<th>月</th>
+<th>火</th>
+<th>水</th>
+<th>木</th>
+<th>金</th>
+<th>土</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="timetableBody">
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+ 授業登録・編集
+ モーダル
+===================== -->
+
+
+<!-- =====================
+ 授業詳細
+===================== -->
+
+<div
+id="classDetailModal"
+style="display:none;">
+
+<div class="detail">
+
+<h2 id="detailClassName">
+📚 授業
+</h2>
+
+<p id="detailClassTime"></p>
+
+<hr>
+
+<p>
+👨‍🏫 <strong>先生</strong><br>
+<span id="detailTeacher"></span>
+</p>
+
+<p>
+📍 <strong>場所</strong><br>
+<span id="detailRoom"></span>
+</p>
+
+<p>
+🎒 <strong>持ち物</strong><br>
+<span id="detailBelongings"></span>
+</p>
+
+<p>
+📝 <strong>課題メモ</strong><br>
+<span id="detailMemo"></span>
+</p>
+
+<br>
+
+<button onclick="editCurrentClass()">
+✏️ 編集
+</button>
+
+<button onclick="deleteCurrentClass()">
+🗑 削除
+</button>
+
+<button onclick="closeClassDetail()">
+閉じる
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================
+ 授業登録・編集
+===================== -->
+
+<div
+id="classModal"
+style="display:none;">
+
+<div class="detail">
+
+<h2 id="classModalTitle">
+📚 授業登録
+</h2>
+
+<p id="classTime"></p>
+
+<input
+id="className"
+placeholder="授業名">
+
+<input
+id="teacher"
+placeholder="先生名">
+
+<input
+id="room"
+placeholder="場所">
+
+<textarea
+id="belongings"
+placeholder="持ち物">
+</textarea>
+
+<textarea
+id="classMemo"
+placeholder="課題メモ">
+</textarea>
+
+<button onclick="saveClass()">
+💾 保存
+</button>
+
+<button onclick="closeClassModal()">
+キャンセル
+</button>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+<!-- =====================
+ テンプレート
+===================== -->
+
+
+<section
+id="templatePage"
+style="display:none;">
+
+
+<div class="detail">
+
+
+<h2>⭐ テンプレート</h2>
+
+
+<div id="templateList">
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+ 学校設定
+===================== -->
+
+
+<section
+id="schoolPage"
+style="display:none;">
+
+
+<div class="detail">
+
+
+<h2>⚙ 学校設定</h2>
+
+
+
+<input
+id="schoolName"
+placeholder="学校名">
+
+
+
+<h3>
+使用する曜日
+</h3>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="月"
+checked>
+月
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="火"
+checked>
+火
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="水"
+checked>
+水
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="木"
+checked>
+木
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="金"
+checked>
+金
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-day"
+value="土">
+土
+</label>
+
+
+
+<h3>
+使用する時限
+</h3>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="1"
+checked>
+1限
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="2"
+checked>
+2限
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="3"
+checked>
+3限
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="4"
+checked>
+4限
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="5"
+checked>
+5限
+</label>
+
+
+<label>
+<input type="checkbox"
+class="school-period"
+value="6">
+6限
+</label>
+
+
+
+<br><br>
+
+
+<button onclick="saveSchool()">
+💾 保存
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+<!-- =========================
+     予定詳細
+========================= -->
+
+<div
+    id="eventDetailModal"
+    class="modal"
+    style="display:none;"
+>
+
+    <div class="modal-content">
+
+        <h2>📅 予定詳細</h2>
+
+        <p>
+            <strong id="detailEventName">
+                予定
+            </strong>
+        </p>
+
+        <p>
+            <span id="detailEventTime">
+                時間指定なし
+            </span>
+        </p>
+
+        <p>
+            <span id="detailEventCategory">
+                予定
+            </span>
+        </p>
+
+
+        <div>
+
+            <button
+                onclick="editCurrentEvent()"
+            >
+                ✏️ 編集
+            </button>
+
+
+            <button
+                onclick="deleteCurrentEvent()"
+            >
+                🗑️ 削除
+            </button>
+
+
+            <button
+                onclick="closeEventDetail()"
+            >
+                閉じる
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+
+</html>
