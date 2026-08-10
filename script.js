@@ -236,8 +236,8 @@ function renderCalendar(){
         // 予定マーク
         // ========================================
 
-       let eventMark = "";
-
+         
+let eventMark = "";
 
 if(
     schedules[key]
@@ -248,60 +248,108 @@ if(
 ){
 
     schedules[key].events
-.sort((a,b) =>
-    (a.start || "").localeCompare(
-        b.start || ""
+    .sort((a,b) =>
+        (a.start || "").localeCompare(
+            b.start || ""
+        )
     )
-)
-.forEach((event, index) => {
+    .forEach((event, index) => {
 
-    eventMark += `
+let categoryClass = "";
 
-        <div
-    class="calendar-event-mini"
-    onclick="
-        event.stopPropagation();
-        openEventDetail(
-            '${key}',
-            ${index}
-        );
-    "
->
+if(event.category === "バイト"){
+    categoryClass = "event-color-baito";
+}
+else if(event.category === "大学"){
+    categoryClass = "event-color-daigaku";
+}
+else if(event.category === "授業"){
+    categoryClass = "event-color-jugyo";
+}
+else if(event.category === "サークル"){
+    categoryClass = "event-color-circle";
+}
+else if(event.category === "プライベート"){
+    categoryClass = "event-color-private";
+}
+else{
+    categoryClass = "event-color-other";
+}
 
-                ${
-                    event.start
-                    ?
-                    `${event.start}〜${event.end || ""}`
-                    :
-                    ""
-                }
+let startText = "";
+let endText = "";
 
-                <br>
+if(event.start){
 
-                <span class="event-category-mini">
-
-                    ${event.category || "予定"}
-
-                </span>
-
-                ${
-                    event.name
-                    ?
-                    `：${event.name}`
-                    :
-                    ""
-                }
-
-            </div>
-
-        `;
-
-    });
+    startText =
+        event.start.endsWith(":00")
+        ? event.start.slice(0, -3)
+        : event.start;
 
 }
 
+if(event.end){
 
-        // ========================================
+    endText =
+        event.end.endsWith(":00")
+        ? event.end.slice(0, -3)
+        : event.end;
+
+}
+
+let timeText = "";
+
+if(startText){
+
+    timeText =
+        startText
+        +
+        (
+            endText
+            ? "〜" + endText
+            : ""
+        );
+
+}
+
+const shortName =
+    event.shortName || event.name || "予定";
+
+eventMark += `
+
+    <div
+        class="calendar-event-mini ${categoryClass}"
+        onclick="
+            event.stopPropagation();
+            openEventDetail(
+                '${key}',
+                ${index}
+            );
+        "
+    >
+
+        <span class="event-short-name">
+            ${shortName}
+        </span>
+
+        ${
+            timeText
+            ?
+            `<span class="event-time-mini">
+                ${timeText}
+            </span>`
+            :
+            ""
+        }
+
+    </div>
+
+`;
+
+});
+
+}
+     // ========================================
         // 授業のコンパクト表示
         // ========================================
 
@@ -734,6 +782,11 @@ function saveEvent(){
             "eventName"
         ).value.trim();
 
+    const shortName =
+    document.getElementById(
+        "eventShortName"
+    ).value.trim();
+
 
     const noTime =
         document.getElementById(
@@ -817,7 +870,11 @@ const eventData = {
     category:
         category || "予定",
 
-    name:name,
+    name:
+        name,
+
+    shortName:
+        shortName || name,
 
     start:
         noTime
@@ -831,7 +888,6 @@ const eventData = {
 
     noTime:
         noTime
-
 };
 
 
@@ -885,6 +941,11 @@ else{
     document.getElementById(
         "eventName"
     ).value = "";
+
+    document.getElementById(
+    "eventShortName"
+    ).value = "";
+    
 
 
     document.getElementById(
@@ -1864,6 +1925,12 @@ function editCurrentEvent(){
     ).value =
         event.name || "";
 
+
+    document.getElementById(
+        "eventShortName"
+    ).value =
+        event.shortName || "";
+ 
 
     document.getElementById(
         "eventStart"
