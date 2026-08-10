@@ -878,3 +878,5 @@ function addEventFromDetail() {
     form.style.display = "flex";
   }
 }
+
+
