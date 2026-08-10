@@ -1,6 +1,5 @@
-
 // ========================================
-// Schedule Link
+// Schedule Link (Main Script)
 // ========================================
 
 let classes = JSON.parse(localStorage.getItem("classes")) || [];
@@ -72,6 +71,13 @@ function dateKey(date) {
     "-" +
     date.getDate()
   );
+}
+
+function formatDateToInput(dateObj) {
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const d = String(dateObj.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 // 時刻フォーマット関数 (12:00~13:00 → 12〜13, 12:40 → 12:40)
@@ -162,37 +168,32 @@ function renderCalendar() {
     const dayEvents = schedules[dateStr] || schedules[key]?.events || [];
     let eventMark = `<div class="day-events">`;
 
-// 該当箇所（renderCalendar関数内）を以下のように更新
-if (Array.isArray(dayEvents)) {
-  dayEvents.forEach(ev => {
-    const sName = ev.shortName || ev.title || ev.name || "";
-    const tText = formatEventTime(ev.startTime || ev.start, ev.endTime || ev.end);
-    
-    // カテゴリごとの色クラスを設定
-    let categoryClass = "event-color-other";
-    const cat = ev.category || "";
-    if (cat === "バイト") categoryClass = "event-color-baito";
-    else if (cat === "大学") categoryClass = "event-color-daigaku";
-    else if (cat === "授業") categoryClass = "event-color-jugyo";
-    else if (cat === "サークル") categoryClass = "event-color-circle";
-    else if (cat === "プライベート") categoryClass = "event-color-private";
+    if (Array.isArray(dayEvents)) {
+      dayEvents.forEach(ev => {
+        const sName = ev.shortName || ev.title || ev.name || "";
+        const tText = formatEventTime(ev.startTime || ev.start, ev.endTime || ev.end);
+        
+        let categoryClass = "event-color-other";
+        const cat = ev.category || "";
+        if (cat === "バイト") categoryClass = "event-color-baito";
+        else if (cat === "大学") categoryClass = "event-color-daigaku";
+        else if (cat === "授業") categoryClass = "event-color-jugyo";
+        else if (cat === "サークル") categoryClass = "event-color-circle";
+        else if (cat === "プライベート") categoryClass = "event-color-private";
 
-    // ★名前と時間を1行でスペースなく結合★
-    eventMark += `
-      <div class="event-badge ${categoryClass}">
-        <span class="event-short-name">${sName}</span>${tText ? `<span class="event-time">${tText}</span>` : ''}
-      </div>
-    `;
-  });
-}
-
-   
+        eventMark += `
+          <div class="event-badge ${categoryClass}">
+            <span class="event-short-name">${sName}</span>${tText ? `<span class="event-time">${tText}</span>` : ''}
+          </div>
+        `;
+      });
+    }
     eventMark += `</div>`;
+
     let dayClassesList = "day";
     if (isToday) dayClassesList += " today";
     if (isSelected) dayClassesList += " selected";
 
-    // 日付セルの生成
     calendar.innerHTML += `
       <div class="${dayClassesList}" onclick="selectDate(${year}, ${month}, ${day})">
         <span class="date-number">${day}</span>
@@ -202,7 +203,7 @@ if (Array.isArray(dayEvents)) {
     `;
   }
 
-  // 翌月の日付埋め (6行7列＝42セルになるように調整)
+  // 翌月の日付埋め
   const totalCells = firstDay + lastDay;
   const nextDays = (42 - totalCells) % 7;
   for (let i = 1; i <= nextDays; i++) {
@@ -271,6 +272,7 @@ function showDetail() {
       </div>
     `;
   }
+
   // 授業データ表示
   const classList = document.getElementById("classList");
   if (classList) {
@@ -328,15 +330,6 @@ function goToday() {
 // 予定追加・編集フォーム (モーダル)
 // ========================================
 
-// ヘルパー：Dateオブジェクトを "YYYY-MM-DD" 形式の文字列に変換
-function formatDateToInput(dateObj) {
-  const y = dateObj.getFullYear();
-  const m = String(dateObj.getMonth() + 1).padStart(2, "0");
-  const d = String(dateObj.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
-// 右下の（＋）ボタンを押したとき（日付自由選択）
 function openEventForm() {
   const sheet = document.getElementById("detailBottomSheet");
   if (sheet) sheet.style.display = "none";
@@ -344,17 +337,14 @@ function openEventForm() {
   editingEventKey = "";
   editingEventIndex = -1;
 
-  // フォーム初期化
   const nameInput = document.getElementById("eventName");
   const shortNameInput = document.getElementById("eventShortName");
   if (nameInput) nameInput.value = "";
   if (shortNameInput) shortNameInput.value = "";
   
-  // モーダルタイトルを新規用に変更
   const titleEl = document.querySelector("#eventFormModal .modal-title");
   if (titleEl) titleEl.textContent = "予定の作成";
 
-  // 日付入力欄に selectedDate（未選択なら今日）を初期セット
   const dateInput = document.getElementById("eventDateInput");
   if (dateInput) {
     const targetDate = selectedDate || new Date();
@@ -367,12 +357,12 @@ function openEventForm() {
 
 // ボトムシートの「＋ この日に予定を追加」を押したとき
 function addEventFromDetail() {
-  closeDetailSheet();
+  const sheet = document.getElementById("detailBottomSheet");
+  if (sheet) sheet.style.display = "none";
 
   editingEventKey = "";
   editingEventIndex = -1;
 
-  // フォーム初期化
   const nameInput = document.getElementById("eventName");
   const shortNameInput = document.getElementById("eventShortName");
   if (nameInput) nameInput.value = "";
@@ -381,7 +371,6 @@ function addEventFromDetail() {
   const titleEl = document.querySelector("#eventFormModal .modal-title");
   if (titleEl) titleEl.textContent = "予定の作成";
 
-  // ボトムシートで選択している日付を自動セット
   const dateInput = document.getElementById("eventDateInput");
   if (dateInput && selectedDate) {
     dateInput.value = formatDateToInput(selectedDate);
@@ -407,7 +396,6 @@ function toggleEventTime() {
   timeArea.style.display = noTime.checked ? "none" : "block";
 }
 
-// 既存予定の編集画面を開く処理
 function editEvent(index) {
   const key = dateKey(selectedDate);
   if (!schedules[key] || !schedules[key].events || !schedules[key].events[index]) return;
@@ -418,11 +406,9 @@ function editEvent(index) {
 
   closeDetailSheet();
 
-  // タイトルを「予定の編集」に変更
   const titleEl = document.querySelector("#eventFormModal .modal-title");
   if (titleEl) titleEl.textContent = "予定の編集";
 
-  // 既存データの読み込み
   document.getElementById("eventCategory").value = event.category || "その他";
   document.getElementById("eventName").value = event.name || "";
   document.getElementById("eventShortName").value = event.shortName || "";
@@ -443,7 +429,6 @@ function editEvent(index) {
   if (form) form.style.display = "flex";
 }
 
-// 予定の保存（新規追加・編集上書き）
 function saveEvent() {
   const category = document.getElementById("eventCategory").value.trim();
   const name = document.getElementById("eventName").value.trim();
@@ -463,12 +448,11 @@ function saveEvent() {
     return;
   }
 
-  // 日付欄で指定された日付を取得（入力があればその日付、なければ現在選択中の日付）
   let targetKey = dateKey(selectedDate);
   if (dateVal) {
     const [y, m, d] = dateVal.split("-").map(Number);
     targetKey = `${y}-${m}-${d}`;
-    selectedDate = new Date(y, m - 1, d); // 選択日も更新
+    selectedDate = new Date(y, m - 1, d);
   }
 
   if (!schedules[targetKey]) {
@@ -485,7 +469,6 @@ function saveEvent() {
   };
 
   if (editingEventKey !== "" && editingEventIndex !== -1) {
-    // 編集時：もし日付が変更されていたら元の場所から削除して新しい日付に移動
     if (editingEventKey !== targetKey) {
       schedules[editingEventKey].events.splice(editingEventIndex, 1);
       schedules[targetKey].events.push(eventData);
@@ -493,13 +476,11 @@ function saveEvent() {
       schedules[targetKey].events[editingEventIndex] = eventData;
     }
   } else {
-    // 新規作成時
     schedules[targetKey].events.push(eventData);
   }
 
   saveAllData();
 
-  // フォームリセット
   document.getElementById("eventCategory").value = "バイト";
   document.getElementById("eventName").value = "";
   document.getElementById("eventShortName").value = "";
@@ -508,7 +489,6 @@ function saveEvent() {
   document.getElementById("eventNoTime").checked = false;
 
   toggleEventTime();
-
   closeEventForm();
   renderCalendar();
   showDetail();
@@ -523,6 +503,7 @@ function deleteEvent(index) {
     showDetail();
   }
 }
+
 // ========================================
 // 時間割
 // ========================================
@@ -536,7 +517,6 @@ function renderTimetableWithClass() {
   const days = school.days;
   const periods = school.periods;
 
-  // ★追加：ヘッダー（曜日行）を設定で選択された曜日だけに動的更新★
   const thead = document.querySelector("#timetablePage table thead");
   if (thead) {
     let headerRow = "<tr><th></th>";
@@ -789,92 +769,3 @@ window.onload = function () {
   renderCalendar();
   renderTimetableWithClass();
 };
-
-// 現在選択中の日付を保持する変数
-let selectedDateForAdd = new Date().toISOString().split('T')[0];
-
-// カレンダーの日付セルをクリックした時の処理（既存関数があれば書き換え・拡張）
-function onDateClick(dateStr) {
-  selectedDateForAdd = dateStr; // 選択した日付（例: '2026-08-10'）を記録
-  
-  // 日付詳細モーダルのタイトルに表示
-  const dateTitle = document.getElementById('detailDateTitle');
-  if (dateTitle) dateTitle.innerText = dateStr + ' の予定';
-  
-  // 日付詳細モーダルを開く
-  const detailModal = document.getElementById('eventDetailModal');
-  if (detailModal) detailModal.style.display = 'flex';
-}
-
-// 「詳細画面」から「＋ この日に予定を追加」を押した時の処理
-function addEventFromDetail() {
-  // 1. 詳細モーダルを閉じる
-  closeEventDetail();
-
-  // 2. 予定追加モーダルの日付入力欄に自動設定
-  const dateInput = document.getElementById('eventDateInput');
-  if (dateInput) {
-    dateInput.value = selectedDateForAdd;
-  }
-
-  // 3. 予定追加モーダルを開く
-  const eventModal = document.getElementById('eventModal');
-  if (eventModal) {
-    eventModal.style.display = 'flex';
-  }
-}
-
-// 予定詳細モーダルを閉じる処理
-function closeEventDetail() {
-  const detailModal = document.getElementById('eventDetailModal');
-  if (detailModal) detailModal.style.display = 'none';
-}
-
-// 予定追加モーダルを閉じる処理
-function closeEventModal() {
-  const eventModal = document.getElementById('eventModal');
-  if (eventModal) eventModal.style.display = 'none';
-}
-
-// 「＋ この日に予定を追加」ボタンのクリック処理を確実に実行させる
-document.addEventListener("DOMContentLoaded", function() {
-  document.addEventListener("click", function(e) {
-    // 押された要素が「＋ この日に予定を追加」ボタン（またはその中の文字）だった場合
-    if (e.target && (e.target.matches(".sheet-footer button") || e.target.textContent.includes("この日に予定を追加"))) {
-      e.stopPropagation(); // 他のクリックイベントをブロック
-      e.preventDefault();
-      addEventFromDetail(); // 予定追加画面を開く
-    }
-  });
-});
-
-function addEventFromDetail() {
-  // 1. ボトムシート（黒い画面）を確実に非表示にする
-  const sheet = document.getElementById("detailBottomSheet");
-  if (sheet) sheet.style.display = "none";
-
-  editingEventKey = "";
-  editingEventIndex = -1;
-
-  // 2. フォーム入力欄の初期化
-  const nameInput = document.getElementById("eventName");
-  const shortNameInput = document.getElementById("eventShortName");
-  if (nameInput) nameInput.value = "";
-  if (shortNameInput) shortNameInput.value = "";
-
-  // 3. タイトルを「予定の作成」に設定
-  const titleEl = document.querySelector("#eventFormModal .modal-title");
-  if (titleEl) titleEl.textContent = "予定の作成";
-
-  // 4. ボトムシートで選択中だった日付を自動セット
-  const dateInput = document.getElementById("eventDateInput");
-  if (dateInput && selectedDate) {
-    dateInput.value = formatDateToInput(selectedDate);
-  }
-
-  // 5. 「予定の作成」モーダルを表示する
-  const form = document.getElementById("eventFormModal");
-  if (form) {
-    form.style.display = "flex";
-  }
-}
