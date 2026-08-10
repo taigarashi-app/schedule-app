@@ -267,145 +267,203 @@ textarea {
 
 
 
-/* カレンダー */
+/* =========================
+   カレンダー
+========================= */
 
 .calendar {
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(7,1fr);
-
-    gap:8px;
-
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
 }
-
-
-
-
 
 .day {
-
-    background:white;
-
-    min-height:100px;
-
-    padding:8px;
-
-    border-radius:15px;
-
+    background: white;
+    min-height: 100px;
+    padding: 8px;
+    border-radius: 15px;
+    box-sizing: border-box;
 }
-
-
-
-
 
 .week {
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(7,1fr);
-
-    text-align:center;
-
-    font-weight:bold;
-
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
 }
 
 
+/* =========================
+   カレンダーの授業コマ
+========================= */
 
+.class-mini {
+    display: flex;
+    gap: 3px;
+    margin-top: 4px;
+}
 
+.class-box {
+    width: 6px;
+    height: 6px;
+    border: 1px solid #999;
+    border-radius: 1px;
+    display: inline-block;
+    box-sizing: border-box;
+}
 
-
-@media(max-width:600px){
-
-
-.timetable {
-
-    font-size:11px;
-
+.class-box.active {
+    background: #9bb7d4;
+    border-color: #9bb7d4;
 }
 
 
-.timetable td {
+/* =========================
+   カレンダー予定
+========================= */
 
-    height:70px;
+.calendar-event-mini {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 
+    width: 100%;
+    box-sizing: border-box;
+
+    margin-top: 3px;
+    padding: 2px 3px;
+
+    font-size: 10px;
+    line-height: 1.2;
+
+    overflow: hidden;
 }
 
 
+/* 予定名 */
 
-.app {
+.event-short-name {
+    display: inline-flex;
 
-    padding:10px;
+    min-width: 20px;
+    height: 20px;
 
+    padding: 0 5px;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 1;
+
+    border-radius: 12px;
+
+    font-size: 9px;
+    font-weight: bold;
+
+    box-sizing: border-box;
+
+    white-space: nowrap;
 }
 
 
+/* 時間 */
+
+.event-time-mini {
+    font-size: 10px;
+    white-space: nowrap;
+    flex-shrink: 1;
 }
 
-/* カレンダーの授業コマ */
 
-.class-mini{
-    display:flex;
-    gap:3px;
-    margin-top:4px;
+/* =========================
+   予定カテゴリーの色
+========================= */
+
+.event-color-baito {
+    color: #4caf50;
 }
 
-.class-box{
-    width:6px;
-    height:6px;
-    border:1px solid #999;
-    border-radius:1px;
-    display:inline-block;
+.event-color-daigaku {
+    color: #2196f3;
 }
 
-.class-box.active{
-    background:#9bb7d4;
-    border-color:#9bb7d4;
+.event-color-jugyo {
+    color: #9c27b0;
 }
 
-.calendar-event{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 4px;
-    border-bottom:1px solid #e5e5e5;
-    font-size:14px;
+.event-color-circle {
+    color: #ff9800;
 }
 
-.event-time{
-    min-width:90px;
+.event-color-private {
+    color: #e91e63;
 }
 
-.event-category{
-    white-space:nowrap;
+.event-color-other {
+    color: #777;
 }
 
-.calendar-event strong{
-    font-weight:500;
-    flex:1;
+
+/* 予定名の背景色 */
+
+.event-color-baito .event-short-name {
+    background: #dff3e3;
+    color: #3d8b4a;
 }
 
-.calendar-event button{
-    font-size:11px;
+.event-color-daigaku .event-short-name {
+    background: #dcecff;
+    color: #3974b8;
 }
 
-.calendar-event-mini{
+.event-color-jugyo .event-short-name {
+    background: #eadcf7;
+    color: #7b4aa5;
+}
 
-    font-size:9px;
+.event-color-circle .event-short-name {
+    background: #fff0d6;
+    color: #b87816;
+}
 
-    line-height:1.3;
+.event-color-private .event-short-name {
+    background: #f9dce8;
+    color: #b84b72;
+}
 
-    margin-top:3px;
+.event-color-other .event-short-name {
+    background: #eeeeee;
+    color: #666666;
+}
 
-    padding:3px;
 
-    border-radius:3px;
+/* =========================
+   スマホ
+========================= */
 
-    background:#f2f5f8;
+@media (max-width: 600px) {
 
-    overflow:visible;
+    .calendar {
+        gap: 4px;
+    }
+
+    .day {
+        min-height: 80px;
+        padding: 5px;
+    }
+
+    .calendar-event-mini {
+        font-size: 9px;
+    }
+
+    .event-short-name {
+        font-size: 8px;
+        height: 18px;
+        padding: 0 4px;
+    }
+
+    .event-time-mini {
+        font-size: 9px;
+    }
 
 }
