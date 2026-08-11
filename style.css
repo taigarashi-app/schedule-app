@@ -1560,3 +1560,19 @@ button,
   padding: 1px 2px;
   white-space: nowrap;
 }
+
+.event-badge {
+  display: flex !important;
+  flex-direction: row !important; /* 横並び（1行）を基本にする */
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  white-space: nowrap !important; /* 基本は勝手に改行させない */
+  overflow: hidden;
+}
+
+/* ただし、短い名前や省略名ではなく、長いテキストが含まれる場合などのための調整 */
+.event-short-name {
+  white-space: normal !important; /* 省略名は必要に応じて折り返しを許可 */
+  word-break: break-all !important;
+}
