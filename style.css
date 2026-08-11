@@ -1573,13 +1573,3 @@ button,
   line-height: 1.2;
   text-align: left;
 }
-.event-badge {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
-  white-space: normal !important; /* 改行を有効にする */
-  word-break: break-all !important; /* 文字の途中でも強制的に折り返す */
-  overflow-wrap: break-word !important;
-}
-
