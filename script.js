@@ -429,7 +429,6 @@ function editEvent(index) {
   const form = document.getElementById("eventFormModal");
   if (form) form.style.display = "flex";
 }
-
 function saveEvent() {
   const category = document.getElementById("eventCategory").value.trim();
   const name = document.getElementById("eventName").value.trim();
@@ -460,13 +459,19 @@ function saveEvent() {
     schedules[targetKey] = { events: [], diary: "" };
   }
 
+  // ★設定されたカスタムカテゴリから、選ばれたカテゴリの色を探して取得する
+  const categories = getCategories();
+  const selectedCat = categories.find(c => c.name === category);
+  const color = selectedCat ? selectedCat.color : "#808080"; // 見つからない場合は灰色をデフォルトに
+
   const eventData = {
     category: category || "予定",
     name: name,
     shortName: shortName || name,
     start: noTime ? "" : start,
     end: noTime ? "" : end,
-    noTime: noTime
+    noTime: noTime,
+    color: color // ← ここで色データを一緒に保存します！
   };
 
   if (editingEventKey !== "" && editingEventIndex !== -1) {
@@ -504,6 +509,7 @@ function deleteEvent(index) {
     showDetail();
   }
 }
+
 
 // ========================================
 // 時間割
