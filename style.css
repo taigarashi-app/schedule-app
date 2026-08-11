@@ -1554,18 +1554,22 @@ button,
   box-sizing: border-box;
 }
 
-/* 予定バッジ全体の基本設定（横並び・1行を基本にする） */
+/* 予定バッジ全体のスタイル（角を丸く、1行に全角5文字入る文字サイズに調整） */
 .event-badge {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 2px !important;
-  font-size: 10px;
-  padding: 1px 2px;
-  background-color: #808080;
+  
+  /* 文字サイズを全角5文字が綺麗に収まる大きさに微調整（必要に応じて 9px〜11px で微調整してください） */
+  font-size: 9.5px; 
+  padding: 2px 4px;
+  
+  /* 角をさらに丸っぽくする（数値が大きいほど丸くなります） */
+  border-radius: 6px !important; 
+  
   color: #fff;
-  border-radius: 3px;
   margin-bottom: 2px;
 }
 
@@ -1575,7 +1579,7 @@ button,
   word-break: break-all !important;
 }
 
-/* 時間部分（22-23など）は改行させずに必ず1行で維持する */
+/* 時間部分（22-23など）は改行させずに1行で維持する */
 .event-time {
   white-space: nowrap !important;
   flex-shrink: 0;
