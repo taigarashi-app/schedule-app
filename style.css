@@ -1539,3 +1539,24 @@ button,
   touch-action: manipulation !important;
   cursor: pointer !important;
 }
+
+/* カレンダーの横幅を7等分して画面にぴったり収める */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 各日付セルの余白を狭くして文字が入りやすくする */
+.day {
+  padding: 2px 1px;
+  box-sizing: border-box;
+}
+
+/* 「バ12-14」などの予定バッジの文字を少し小さくして収める */
+.event-badge {
+  font-size: 10px;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
