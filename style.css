@@ -1548,39 +1548,43 @@ button,
   box-sizing: border-box;
 }
 
-/* 各日付セルの余白を狭くして文字が入りやすくする */
+/* 各日付セルの余白を狭くしてスペースを確保 */
 .day {
-  padding: 2px 1px;
+  padding: 1px 0px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* 予定バッジ全体のスタイル（角を丸く、1行に全角5文字入る文字サイズに調整） */
+/* 予定バッジ：全角5文字が1行に収まる文字サイズと角丸 */
 .event-badge {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 2px !important;
+  gap: 1px !important;
   
-  /* 文字サイズを全角5文字が綺麗に収まる大きさに微調整（必要に応じて 9px〜11px で微調整してください） */
-  font-size: 8px; 
-  padding: 2px 4px;
+  /* 漢字・ひらがな5文字が綺麗に1行に入る文字サイズ */
+  font-size: 7.5px !important; 
+  padding: 1.5px 2px;
   
-  /* 角をさらに丸っぽくする（数値が大きいほど丸くなります） */
+  /* 角を丸っぽくする */
   border-radius: 6px !important; 
   
   color: #fff;
   margin-bottom: 2px;
+  
+  /* 絶対に改行させず1行で収める */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis; /* もし万が一はみ出たら…で省略する安全設計 */
 }
 
-/* 予定の名前（短い名前・長い名前）部分の調整 */
+/* 名前も時間も絶対に改行させない */
 .event-short-name {
-  white-space: normal !important; /* 長い名前は折り返しを許可 */
-  word-break: break-all !important;
+  white-space: nowrap !important;
 }
 
-/* 時間部分（22-23など）は改行させずに1行で維持する */
 .event-time {
   white-space: nowrap !important;
-  flex-shrink: 0;
+  font-size: 7px; /* 時間の文字も少し小さくして隣に並べる */
 }
