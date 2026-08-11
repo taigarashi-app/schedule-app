@@ -80,7 +80,7 @@ function formatDateToInput(dateObj) {
   return `${y}-${m}-${d}`;
 }
 
-// 時刻フォーマット関数 (12:00~13:00 → 12〜13, 12:40 → 12:40)
+// 時刻フォーマット関数 (例: 12:00~14:00 → 12-14)
 function formatEventTime(startTime, endTime) {
   if (!startTime) return "";
   const parseTime = t => {
@@ -89,14 +89,15 @@ function formatEventTime(startTime, endTime) {
   };
   const start = parseTime(startTime);
   const end = endTime ? parseTime(endTime) : null;
-  const isStartExact = start.m === 0;
-  const isEndExact = end ? end.m === 0 : true;
+  
+  // 分がない（0分の）場合は「時間」だけにする（例: 12）
+  const startStr = start.m === 0 ? `${start.h}` : startTime;
+  const endStr = end ? (end.m === 0 ? `${end.h}` : endTime) : "";
 
-  if (end) {
-    if (isStartExact && isEndExact) return `${start.h}〜${end.h}`;
-    return `${isStartExact ? start.h : startTime}〜${isEndExact ? end.h : endTime}`;
+  if (endStr) {
+    return `${startStr}-${endStr}`; // ここを「〜」から「-」に変更しています
   }
-  return isStartExact ? `${start.h}` : startTime;
+  return startStr;
 }
 
 // ========================================
