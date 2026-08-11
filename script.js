@@ -814,3 +814,65 @@ function deleteCategory(index) {
     localStorage.setItem("myCategories", JSON.stringify(cats));
     renderCategoryList();
 }
+// --- カテゴリ管理機能 ---
+
+// カテゴリを取得（なければデフォルト）
+function getCategories() {
+    const saved = localStorage.getItem("myCategories");
+    if (saved) return JSON.parse(saved);
+    return [
+        { name: "バイト", color: "#ffd700" },
+        { name: "大学", color: "#ff6b6b" },
+        { name: "その他", color: "#808080" }
+    ];
+}
+
+// カテゴリを保存・再読み込み
+function addCategory() {
+    const name = document.getElementById("newCatName").value;
+    const color = document.getElementById("newCatColor").value;
+    if (!name) return;
+
+    let cats = getCategories();
+    cats.push({ name, color });
+    localStorage.setItem("myCategories", JSON.stringify(cats));
+    
+    document.getElementById("newCatName").value = "";
+    updateCategoryUI();
+}
+
+function deleteCategory(index) {
+    let cats = getCategories();
+    cats.splice(index, 1);
+    localStorage.setItem("myCategories", JSON.stringify(cats));
+    updateCategoryUI();
+}
+
+// 設定画面のリストと予定作成モーダルの選択肢を更新
+function updateCategoryUI() {
+    // 1. 設定画面のリスト更新
+    const list = document.getElementById("categoryList");
+    if(list) {
+        const cats = getCategories();
+        list.innerHTML = cats.map((cat, index) => `
+            <li style="margin-bottom:5px;">
+                <span style="color:${cat.color}">●</span> ${cat.name} 
+                <button onclick="deleteCategory(${index})">削除</button>
+            </li>
+        `).join('');
+    }
+    
+    // 2. 予定作成モーダルのセレクトボックス更新
+    const select = document.getElementById("eventCategory");
+    if(select) {
+        const cats = getCategories();
+        select.innerHTML = cats.map(cat => 
+            `<option value="${cat.name}">${cat.name}</option>`
+        ).join('');
+    }
+}
+
+// ページ読み込み時にUIを反映
+window.addEventListener('DOMContentLoaded', () => {
+    updateCategoryUI();
+});
