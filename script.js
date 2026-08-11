@@ -174,16 +174,11 @@ function renderCalendar() {
         const sName = ev.shortName || ev.title || ev.name || "";
         const tText = formatEventTime(ev.startTime || ev.start, ev.endTime || ev.end);
         
-        let categoryClass = "event-color-other";
-        const cat = ev.category || "";
-        if (cat === "バイト") categoryClass = "event-color-baito";
-        else if (cat === "大学") categoryClass = "event-color-daigaku";
-        else if (cat === "授業") categoryClass = "event-color-jugyo";
-        else if (cat === "サークル") categoryClass = "event-color-circle";
-        else if (cat === "プライベート") categoryClass = "event-color-private";
+        // ★カスタムカラー（ev.color）があればそれを背景色にし、なければデフォルトの灰色にする
+        const bgColor = ev.color || "#808080";
 
         eventMark += `
-          <div class="event-badge ${categoryClass}">
+          <div class="event-badge" style="background-color: ${bgColor}; color: #fff;">
             <span class="event-short-name">${sName}</span>${tText ? `<span class="event-time">${tText}</span>` : ''}
           </div>
         `;
@@ -254,7 +249,7 @@ function showDetail() {
                 ${event.noTime ? "終日" : (event.start ? `${event.start}〜${event.end || ""}` : "終日")}
               </div>
               <div class="event-info">
-                <span class="event-cat" style="font-size:12px; color:#0a84ff;">[${event.category || "予定"}]</span>
+                <span class="event-cat" style="font-size:12px; color:${event.color || '#0a84ff'};">[${event.category || "予定"}]</span>
                 <strong class="event-title-text" style="color:#fff; font-size:15px; margin-left:4px;">${event.name}</strong>
               </div>
             </div>
