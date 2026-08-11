@@ -770,3 +770,47 @@ window.onload = function () {
   renderCalendar();
   renderTimetableWithClass();
 };
+
+// カテゴリを取得（初期値含む）
+function getCategories() {
+    const defaultCats = [
+        { name: "バイト", color: "#ffd700" },
+        { name: "その他", color: "#808080" }
+    ];
+    const saved = localStorage.getItem("myCategories");
+    return saved ? JSON.parse(saved) : defaultCats;
+}
+
+// カテゴリ追加
+function addCategory() {
+    const name = document.getElementById("newCatName").value;
+    const color = document.getElementById("newCatColor").value;
+    if (!name) return;
+
+    let cats = getCategories();
+    cats.push({ name, color });
+    localStorage.setItem("myCategories", JSON.stringify(cats));
+    
+    document.getElementById("newCatName").value = "";
+    renderCategoryList(); // 一覧を再表示
+}
+
+// 一覧表示と削除ボタン
+function renderCategoryList() {
+    const list = document.getElementById("categoryList");
+    const cats = getCategories();
+    list.innerHTML = cats.map((cat, index) => `
+        <li>
+            <span style="color:${cat.color}">■</span> ${cat.name}
+            <button onclick="deleteCategory(${index})">削除</button>
+        </li>
+    `).join('');
+}
+
+// カテゴリ削除
+function deleteCategory(index) {
+    let cats = getCategories();
+    cats.splice(index, 1);
+    localStorage.setItem("myCategories", JSON.stringify(cats));
+    renderCategoryList();
+}
