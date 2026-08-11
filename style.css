@@ -1554,25 +1554,29 @@ button,
   box-sizing: border-box;
 }
 
-/* 「バ12-14」などの予定バッジの文字を少し小さくして収める */
-.event-badge {
-  font-size: 10px;
-  padding: 1px 2px;
-  white-space: nowrap;
-}
-
+/* 予定バッジ全体の基本設定（横並び・1行を基本にする） */
 .event-badge {
   display: flex !important;
-  flex-direction: row !important; /* 横並び（1行）を基本にする */
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 2px !important;
-  white-space: nowrap !important; /* 基本は勝手に改行させない */
-  overflow: hidden;
+  font-size: 10px;
+  padding: 1px 2px;
+  background-color: #808080;
+  color: #fff;
+  border-radius: 3px;
+  margin-bottom: 2px;
 }
 
-/* ただし、短い名前や省略名ではなく、長いテキストが含まれる場合などのための調整 */
+/* 予定の名前（短い名前・長い名前）部分の調整 */
 .event-short-name {
-  white-space: normal !important; /* 省略名は必要に応じて折り返しを許可 */
+  white-space: normal !important; /* 長い名前は折り返しを許可 */
   word-break: break-all !important;
+}
+
+/* 時間部分（22-23など）は改行させずに必ず1行で維持する */
+.event-time {
+  white-space: nowrap !important;
+  flex-shrink: 0;
 }
