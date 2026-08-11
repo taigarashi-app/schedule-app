@@ -212,6 +212,18 @@
     <section id="schoolPage" style="display:none;">
       <div class="detail">
         <h2>⚙ 学校設定</h2>
+        <h3>🎨 カテゴリ設定</h3>
+        <div id="categoryManager" style="margin-bottom: 20px;">
+            <input type="text" id="newCatName" placeholder="カテゴリ名" style="padding: 8px;">
+            <input type="color" id="newCatColor" value="#ffd700">
+            <button onclick="addCategory()" style="padding: 8px;">追加</button>
+        </div>
+        <ul id="categoryList" style="list-style: none; padding: 0;"></ul>
+        <hr>
+        
+
+        <h3>学校名</h3>
+    
         <input id="schoolName" placeholder="学校名">
         <h3>使用する曜日</h3>
         <label><input type="checkbox" class="school-day" value="月" checked>月</label>
