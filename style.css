@@ -1563,7 +1563,7 @@ button,
   gap: 2px !important;
   
   /* 文字サイズを全角5文字が綺麗に収まる大きさに微調整（必要に応じて 9px〜11px で微調整してください） */
-  font-size: 9px; 
+  font-size: 8px; 
   padding: 2px 4px;
   
   /* 角をさらに丸っぽくする（数値が大きいほど丸くなります） */
