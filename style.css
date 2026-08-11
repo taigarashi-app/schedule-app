@@ -1560,16 +1560,3 @@ button,
   padding: 1px 2px;
   white-space: nowrap;
 }
-/* 予定バッジの折り返しと幅の制限 */
-.event-badge {
-  /* 最大で全角5文字分くらいの幅に制限する（目安として約5em〜6em、またはpx指定） */
-  max-width: 60px; /* バッジの好みに合わせて調整してください */
-  
-  /* 長い文字が来たら自動で折り返す */
-  word-break: break-all;
-  white-space: normal !important; /* 改行を有効にする */
-  
-  /* 文字サイズが小さい場合の調整 */
-  line-height: 1.2;
-  text-align: left;
-}
