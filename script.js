@@ -947,7 +947,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 指を離したとき
+  // 指を離してたとき
   const dragEnd = () => {
     if (!isDragging) return;
     isDragging = false;
