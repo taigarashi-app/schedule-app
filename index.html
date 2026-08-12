@@ -49,18 +49,17 @@
       <!-- 右下の浮遊プラスボタン -->
       <button class="fab-add-button" onclick="openEventForm()">＋</button>
 
-     <!-- 日付詳細ボトムシート -->
+    <!-- 日付詳細ボトムシート -->
       <div id="detailBottomSheet" class="bottom-sheet-overlay" style="display:none;" onclick="closeDetailSheet(event)">
         <div class="bottom-sheet" onclick="event.stopPropagation()">
           
-          <!-- ▼ ここを修正：id="sheetHandle" を追加する -->
-          <div id="sheetHandle" class="sheet-handle"></div>
-
-          <!-- ▼ 閉じるボタンをなくし、これまで通り日付を左側に表示する -->
-          <div style="margin-bottom: 12px;">
-            <h2 id="selectedDate" style="margin: 0; font-size: 18px; color: #fff; text-align: left;">8月12日 水曜日</h2>
+          <!-- ▼ つまみを取り除き、日付のすぐ左に閉じるボタンを置く -->
+          <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <button type="button" onclick="closeDetailSheet()" style="background: none; border: none; color: #8e8e93; font-size: 24px; cursor: pointer; padding: 0; line-height: 1; margin-right: 12px;">×</button>
+            <h2 id="selectedDate" style="margin: 0; font-size: 18px; color: #fff;">8月12日 水曜日</h2>
           </div>
           <!-- ▲ここまで -->
+
           <div class="sheet-content">
             <h3>📅 予定</h3>
             <div id="eventList" class="event-list">
