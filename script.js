@@ -973,3 +973,60 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('mousemove', dragMove);
   window.addEventListener('mouseup', dragEnd);
 });
+
+// ========================================
+// 【一時的】スマホ用：予定データ修復ボタンの設置
+// ========================================
+window.addEventListener("DOMContentLoaded", () => {
+  // すでにボタンがあったら重複しないようにする
+  if (document.getElementById("repairDataBtn")) return;
+
+  const btn = document.createElement("button");
+  btn.id = "repairDataBtn";
+  btn.textContent = "🔄 8月の予定を復活させる";
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  `;
+
+  btn.onclick = () => {
+    let savedSchedules = JSON.parse(localStorage.getItem("scheduleData"));
+    if (!savedSchedules) {
+      alert("修復するデータが見つかりませんでした。");
+      return;
+    }
+
+    let newSchedules = {};
+    let count = 0;
+
+    for (let oldKey in savedSchedules) {
+      let parts = oldKey.split("-");
+      if (parts.length === 3) {
+        let y = parts[0];
+        let m = String(parts[1]).padStart(2, "0");
+        let d = String(parts[2]).padStart(2, "0");
+        let newKey = `${y}-${m}-${d}`;
+        newSchedules[newKey] = savedSchedules[oldKey];
+        if (oldKey !== newKey) count++;
+      } else {
+        newSchedules[oldKey] = savedSchedules[oldKey];
+      }
+    }
+
+    localStorage.setItem("scheduleData", JSON.stringify(newSchedules));
+    alert(`${count}件の予定データを新しい形式に修復しました！ページを再読み込みします。`);
+    location.reload();
+  };
+
+  document.body.appendChild(btn);
+});
