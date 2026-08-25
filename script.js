@@ -1353,14 +1353,11 @@ function saveEvent() {
 // ページの起動処理
 // ========================================
 window.onload = function () {
-  try {
-    if (typeof renderCalendar === "function") renderCalendar();
-    if (typeof renderTimetableWithClass === "function") renderTimetableWithClass();
-    if (typeof updateCategoryUI === "function") updateCategoryUI();
-    if (typeof showPage === "function") showPage('calendarPage');
-  } catch (e) {
-    console.error("起動時エラー: ", e);
-  }
+  showPage('calendarPage'); // 先にページを表示状態にする
+  
+  renderCalendar();
+  renderTimetableWithClass();
+  updateCategoryUI();
   
   const initialNav = document.getElementById("nav-calendarPage");
   if (initialNav) {
