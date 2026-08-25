@@ -1363,4 +1363,3 @@ window.onload = function () {
     initialNav.classList.add("active");
   }
 };
-};
