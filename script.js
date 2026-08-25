@@ -1350,16 +1350,14 @@ function saveEvent() {
 }
 
 // ========================================
-// アプリ起動時の処理（ファイルのいちばん最後に置く）
+// アプリ起動時の処理
 // ========================================
-window.onload = function () {
-  showPage('calendarPage');
-  renderCalendar();
-  renderTimetableWithClass();
-  updateCategoryUI();
-  
-  const initialNav = document.getElementById("nav-calendarPage");
-  if (initialNav) {
-    initialNav.classList.add("active");
-  }
-};
+showPage('calendarPage');
+renderCalendar();
+renderTimetableWithClass();
+updateCategoryUI();
+
+const initialNav = document.getElementById("nav-calendarPage");
+if (initialNav) {
+  initialNav.classList.add("active");
+}
