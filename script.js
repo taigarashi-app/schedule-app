@@ -637,7 +637,8 @@ function saveEvent() {
   closeEventForm();
   renderCalendar();
   showDetail();
-}function saveEvent() {
+}
+function saveEvent() {
   const category = document.getElementById("eventCategory").value.trim();
   const name = document.getElementById("eventName").value.trim();
   const shortName = document.getElementById("eventShortName").value.trim();
@@ -921,7 +922,8 @@ function saveEvent() {
   closeEventForm();
   renderCalendar();
   showDetail();
-}function saveEvent() {
+}
+function saveEvent() {
   const category = document.getElementById("eventCategory").value.trim();
   const name = document.getElementById("eventName").value.trim();
   const shortName = document.getElementById("eventShortName").value.trim();
@@ -992,7 +994,9 @@ function saveEvent() {
   closeEventForm();
   renderCalendar();
   showDetail();
-}function saveEvent() {
+}
+
+function saveEvent() {
   const category = document.getElementById("eventCategory").value.trim();
   const name = document.getElementById("eventName").value.trim();
   const shortName = document.getElementById("eventShortName").value.trim();
