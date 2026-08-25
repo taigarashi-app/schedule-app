@@ -1350,11 +1350,10 @@ function saveEvent() {
 }
 
 // ========================================
-// ページの起動処理
+// アプリ起動時の処理（ファイルのいちばん最後に置く）
 // ========================================
 window.onload = function () {
-  showPage('calendarPage'); // 先にページを表示状態にする
-  
+  showPage('calendarPage');
   renderCalendar();
   renderTimetableWithClass();
   updateCategoryUI();
@@ -1363,4 +1362,5 @@ window.onload = function () {
   if (initialNav) {
     initialNav.classList.add("active");
   }
+};
 };
